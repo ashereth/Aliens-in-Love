@@ -1,6 +1,8 @@
 class Platformer extends Phaser.Scene {
     constructor() {
         super("platformerScene");
+        this.gameOver = this.gameOver.bind(this);
+
     }
 
     init() {
@@ -13,6 +15,16 @@ class Platformer extends Phaser.Scene {
         this.mapHeight = 18 *2 * 40;
         this.maxSpeed_X = 200;
         this.maxSpeed_Y = 1000;
+    }
+    //send player to game over scene
+    gameOver() {
+
+        this.scene.start('GameOverScene');
+    }
+
+    //send player to winning scene
+    win() {
+        this.scene.start('winningScene');
     }
 
     create() {
@@ -34,12 +46,24 @@ class Platformer extends Phaser.Scene {
         this.backgroundLayer = this.map.createLayer("Background", this.tileset, 0, 0);
         this.groundLayer = this.map.createLayer("Ground-n-Platforms", this.tileset, 0, 0);
         this.extraLayer = this.map.createLayer("Extra", this.tileset, 0, 0);
+        this.obstacleLayer = this.map.createLayer("Obstacles", this.tileset, 0, 0);
+        this.winLayer = this.map.createLayer("Winning", this.tileset, 0, 0);
+        this.winLayer.setScale(2.0);
+        this.obstacleLayer.setScale(2.0);
         this.groundLayer.setScale(2.0);
         this.backgroundLayer.setScale(2.0);
         this.extraLayer.setScale(2.0);
 
         // Make it collidable
         this.groundLayer.setCollisionByProperty({
+            collides: true
+        });
+        //set collides for obstacles
+        this.obstacleLayer.setCollisionByProperty({
+            collides: true
+        });
+        //set collides for when player reaches end
+        this.winLayer.setCollisionByProperty({
             collides: true
         });
 
@@ -55,6 +79,8 @@ class Platformer extends Phaser.Scene {
         this.cameras.main.setZoom(2);
         // Enable collision handling
         this.physics.add.collider(my.sprite.player, this.groundLayer);
+        this.physics.add.collider(my.sprite.player, this.obstacleLayer, this.gameOver);
+        this.physics.add.collider(my.sprite.player, this.winLayer, this.win);
 
         // set up Phaser-provided cursor key input
         cursors = this.input.keyboard.createCursorKeys();
