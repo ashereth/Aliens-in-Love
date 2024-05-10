@@ -2,6 +2,7 @@ class Platformer extends Phaser.Scene {
     constructor() {
         super("platformerScene");
         this.gameOver = this.gameOver.bind(this);
+        this.win = this.win.bind(this);
 
     }
 
@@ -24,7 +25,7 @@ class Platformer extends Phaser.Scene {
 
     //send player to winning scene
     win() {
-        this.scene.start('winningScene');
+        this.scene.start('WinningScene');
     }
 
     create() {
