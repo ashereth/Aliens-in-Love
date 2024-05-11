@@ -88,6 +88,7 @@ class Platformer extends Phaser.Scene {
 
         // debug key listener (assigned to D key)
         this.physics.world.drawDebug = false;
+        this.physics.world.debugGraphic.clear()
         this.input.keyboard.on('keydown-D', () => {
             this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
             this.physics.world.debugGraphic.clear()
